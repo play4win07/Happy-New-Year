@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wishes from Deepak</title>
+    <style>
+        /* Fonts import kar rahe hain */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600;800&family=Sacramento&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: #0f0c29;
+            background: linear-gradient(to right, #24243e, #302b63, #0f0c29);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+            perspective: 1000px;
+        }
+
+        /* --- PHOTO BUBBLES STYLING --- */
+        .photo-container {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1; /* Card ke piche rahenge */
+            pointer-events: none;
+        }
+
+        .photo-bubble {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-size: cover;
+            background-position: center;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.6), inset 0 0 20px rgba(0,0,0,0.5);
+            border: 3px solid rgba(255,255,255,0.3);
+            opacity: 0.7;
+            animation: floatUp linear infinite;
+            bottom: -150px;
+        }
+
+        /* Alag alag speed aur position ke liye */
+        .p1 { left: 10%; animation-duration: 15s; animation-delay: 0s; transform: scale(0.8); }
+        .p2 { left: 30%; animation-duration: 18s; animation-delay: 2s; width: 120px; height: 120px; }
+        .p3 { left: 50%; animation-duration: 20s; animation-delay: 1s; transform: scale(0.9); }
+        .p4 { left: 70%; animation-duration: 17s; animation-delay: 3s; width: 110px; height: 110px; }
+        .p5 { left: 85%; animation-duration: 22s; animation-delay: 0.5s; transform: scale(0.7); }
+        .p6 { left: 20%; animation-duration: 25s; animation-delay: 5s; transform: scale(1.1); }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.7; }
+            100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* --- MAIN GLASS CARD --- */
+        .card {
+            position: relative;
+            z-index: 10; /* Photos ke aage */
+            width: 340px;
+            padding: 40px 30px;
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            border-radius: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            border-left: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(20px); /* Isse piche ki photos dhundhli dikhengi */
+            text-align: center;
+            transform-style: preserve-3d;
+            transition: transform 0.3s;
+        }
+
+        h1 { font-size: 3.5rem; line-height: 1; font-weight: 800; color: #fff; text-shadow: 0 0 20px #00d4ff; margin-bottom: 10px; }
+        h2 { font-size: 1.2rem; color: #ff00cc; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px; }
+        
+        .message-box {
+            font-size: 0.95rem; color: #eee; min-height: 70px; margin-bottom: 25px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .signature {
+            font-family: 'Sacramento', cursive; font-size: 2.8rem; color: #ffd700;
+            margin-top: 5px; text-shadow: 0 0 10px #ffd700; transform: rotate(-5deg); display: inline-block;
+        }
+
+        .btn {
+            background: linear-gradient(90deg, #03a9f4, #f441a5); border: none; padding: 12px 30px;
+            color: white; border-radius: 30px; cursor: pointer; font-weight: bold; font-size: 1rem;
+            box-shadow: 0 0 15px #f441a5; transition: 0.3s; margin-top: 15px;
+        }
+        .btn:active { transform: scale(0.95); }
+        
+        /* Confetti Canvas */
+        #confetti { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 20; }
+    </style>
+</head>
+<body>
+
+    <canvas id="confetti"></canvas>
+
+    <div class="photo-container">
+        <div class="photo-bubble p1" style="background-image: url('1.jpg');"></div>
+        
+        <div class="photo-bubble p2" style="background-image: url('2.jpg');"></div>
+        
+        <div class="photo-bubble p3" style="background-image: url('3.jpg');"></div>
+        
+        <div class="photo-bubble p4" style="background-image: url('4.jpg');"></div>
+        
+        <div class="photo-bubble p5" style="background-image: url('5.jpg');"></div>
+        
+        <div class="photo-bubble p6" style="background-image: url('6.jpg');"></div>
+    </div>
+    <div class="card" id="tiltCard">
+        <h2>Happy New Year</h2>
+        <h1>2026</h1>
+        
+        <div class="message-box">
+            Saal naya hai, yaadein purani hain,<br>
+            Aapke saath ye zindagi suhani hai.<br>
+            Cheers to more moments like these! 🥂
+        </div>
+
+        <p style="font-size: 0.8rem; color: #ccc;">With Love & Best Wishes:</p>
+        <div class="signature">Deepak</div>
+        <br>
+        <button class="btn" onclick="celebrate()">Celebrate! 🎉</button>
+    </div>
+
+    <script>
+        // --- MOUSE TILT EFFECT ---
+        const card = document.getElementById('tiltCard');
+        document.addEventListener('mousemove', (e) => {
+            let xAxis = (window.innerWidth / 2 - e.pageX) / 20;
+            let yAxis = (window.innerHeight / 2 - e.pageY) / 20;
+            card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+        });
+        // Reset on mouse leave
+        document.addEventListener('mouseleave', () => {
+            card.style.transform = `rotateY(0deg) rotateX(0deg)`;
+        });
+
+
+        // --- CONFETTI (DHAMAKA) LOGIC ---
+        const canvas = document.getElementById('confetti');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        let confetti = [];
+
+        function celebrate() {
+            // Add pieces of confetti from center bottom
+            for(let i=0; i<150; i++) {
+                confetti.push({
+                    x: window.innerWidth / 2,
+                    y: window.innerHeight - 50,
+                    w: Math.random() * 8 + 4,
+                    h: Math.random() * 8 + 4,
+                    dx: (Math.random() - 0.5) * 30, // Spread wide
+                    dy: Math.random() * -25 - 10,   // Shoot up high
+                    color: `hsl(${Math.random() * 360}, 100%, 60%)`,
+                    gravity: 0.4,
+                    rotation: Math.random() * 360,
+                    rotationSpeed: (Math.random() - 0.5) * 10
+                });
+            }
+        }
+
+        function updateConfetti() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            confetti.forEach((p, i) => {
+                p.x += p.dx;
+                p.y += p.dy;
+                p.dy += p.gravity;
+                p.dx *= 0.98; // Air resistance
+                p.rotation += p.rotationSpeed;
+
+                ctx.save();
+                ctx.translate(p.x + p.w / 2, p.y + p.h / 2);
+                ctx.rotate(p.rotation * Math.PI / 180);
+                ctx.fillStyle = p.color;
+                ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+                ctx.restore();
+
+                if(p.y > canvas.height) confetti.splice(i, 1);
+            });
+            requestAnimationFrame(updateConfetti);
+        }
+        updateConfetti();
+
+        // Resize fix
+        window.addEventListener('resize', () => {
+             canvas.width = window.innerWidth;
+             canvas.height = window.innerHeight;
+        });
+
+    </script>
+</body>
+</html>
