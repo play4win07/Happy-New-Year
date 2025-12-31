@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
     <title>Deepak's 2026 Wish</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@1,400&display=swap');
@@ -13,36 +14,38 @@
             background-color: #000;
             height: 100vh;
             width: 100vw;
-            overflow: hidden;
+            overflow: hidden; /* Scroll band */
+            touch-action: none; /* Mobile touch gestures band */
             font-family: 'Cinzel', serif;
             color: #fff;
         }
 
-        /* --- BACKGROUND SLIDESHOW (FIXED - NO ZOOM) --- */
+        /* --- BACKGROUND SLIDESHOW (FIXED & LOCKED) --- */
         .slider {
-            position: absolute;
+            position: fixed; /* Absolute ki jagah Fixed */
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: 1;
+            pointer-events: none; /* User ispar click nahi kar payega */
         }
 
         .slide {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background-size: cover;      /* Screen fill karega */
-            background-position: center; /* Beech ka hissa dikhayega */
-            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
             opacity: 0;
-            transition: opacity 1.5s ease-in-out; /* Sirf fade effect */
+            transition: opacity 1.5s ease-in-out;
+            /* Transform hata diya taaki koi movement na ho */
         }
 
-        /* Active class - Sirf dikhane ke liye, zoom hata diya */
         .active {
-            opacity: 0.5; /* Thoda dark taaki text dikhe */
+            opacity: 0.5;
         }
 
-        /* --- TEXT OVERLAYS --- */
+        /* --- CONTENT LAYER --- */
         .content {
-            position: absolute;
+            position: fixed; /* Fixed taaki hile nahi */
+            top: 0; left: 0;
             z-index: 10;
             width: 100%;
             height: 100%;
@@ -51,7 +54,8 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            background: rgba(0,0,0,0.2); /* Halki shadow */
+            background: rgba(0,0,0,0.2);
+            pointer-events: none; /* Text select nahi hoga */
         }
 
         .year-label {
@@ -83,7 +87,6 @@
             line-height: 1.6;
         }
 
-        /* --- NAME BADGE --- */
         .badge {
             margin-top: 40px;
             border: 2px solid #bf953f;
@@ -99,12 +102,14 @@
             font-size: 1.2rem;
         }
 
-        /* --- MUSIC PLAYER UI --- */
+        /* --- PLAYER (Isme pointer-events auto rahenge taaki click ho) --- */
         .player {
-            position: absolute;
+            position: fixed;
             bottom: 30px;
             width: 90%;
             max-width: 400px;
+            left: 50%;
+            transform: translateX(-50%); /* Center alignment fix */
             display: flex;
             align-items: center;
             gap: 15px;
@@ -113,6 +118,7 @@
             padding: 10px 20px;
             border-radius: 50px;
             border: 1px solid rgba(255,255,255,0.1);
+            pointer-events: auto; /* Sirf ye area clickable hoga */
         }
         
         .play-btn {
@@ -124,7 +130,8 @@
             box-shadow: 0 0 15px #bf953f;
             font-size: 1.2rem;
             user-select: none;
-            flex-shrink: 0; /* Button shrink nahi hoga */
+            flex-shrink: 0;
+            -webkit-tap-highlight-color: transparent; /* Blue highlight hatane ke liye */
         }
         
         .track-info {
@@ -173,7 +180,7 @@
     </audio>
 
     <script>
-        // 1. SLIDESHOW (No Zoom)
+        // Slideshow
         const slides = document.querySelectorAll('.slide');
         let currentSlide = 0;
 
@@ -184,21 +191,18 @@
         }
         setInterval(nextSlide, 3500);
 
-        // 2. MUSIC PLAYER LOGIC
+        // Audio
         function toggleAudio() {
             const audio = document.getElementById('myAudio');
             const btn = document.querySelector('.play-btn');
             const status = document.getElementById('statusText');
 
             if (audio.paused) {
-                // Play karne ki koshish karo
                 audio.play().then(() => {
                     btn.innerText = 'II';
                     status.innerText = "Playing Music...";
-                }).catch(error => {
-                    // Agar error aaye to user ko batao
-                    console.log("Music Error:", error);
-                    alert("Music play nahi ho raha! \nCheck karein ki mp3 file same folder me hai ya nahi.");
+                }).catch(e => {
+                    alert("Music Error: Check filename or browser settings.");
                 });
             } else {
                 audio.pause();
