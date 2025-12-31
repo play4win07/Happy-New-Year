@@ -3,203 +3,204 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wishes from Deepak</title>
+    <title>Deepak's 2026 Wish</title>
     <style>
-        /* Fonts import kar rahe hain */
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600;800&family=Sacramento&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@1,400&display=swap');
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background: #0f0c29;
-            background: linear-gradient(to right, #24243e, #302b63, #0f0c29);
+            background-color: #000;
             height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Poppins', sans-serif;
             overflow: hidden;
-            perspective: 1000px;
+            font-family: 'Cinzel', serif;
+            color: #fff;
         }
 
-        /* --- PHOTO BUBBLES STYLING --- */
-        .photo-container {
+        /* --- BACKGROUND SLIDESHOW (MOVIE STYLE) --- */
+        .slider {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 1; /* Card ke piche rahenge */
-            pointer-events: none;
+            z-index: 1;
         }
 
-        .photo-bubble {
+        .slide {
             position: absolute;
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background-size: cover;
             background-position: center;
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.6), inset 0 0 20px rgba(0,0,0,0.5);
-            border: 3px solid rgba(255,255,255,0.3);
-            opacity: 0.7;
-            animation: floatUp linear infinite;
-            bottom: -150px;
+            opacity: 0;
+            transform: scale(1);
+            transition: opacity 1s ease-in-out;
         }
 
-        /* Alag alag speed aur position ke liye */
-        .p1 { left: 10%; animation-duration: 15s; animation-delay: 0s; transform: scale(0.8); }
-        .p2 { left: 30%; animation-duration: 18s; animation-delay: 2s; width: 120px; height: 120px; }
-        .p3 { left: 50%; animation-duration: 20s; animation-delay: 1s; transform: scale(0.9); }
-        .p4 { left: 70%; animation-duration: 17s; animation-delay: 3s; width: 110px; height: 110px; }
-        .p5 { left: 85%; animation-duration: 22s; animation-delay: 0.5s; transform: scale(0.7); }
-        .p6 { left: 20%; animation-duration: 25s; animation-delay: 5s; transform: scale(1.1); }
-
-        @keyframes floatUp {
-            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.7; }
-            90% { opacity: 0.7; }
-            100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+        /* Photo Zoom Animation (Ken Burns Effect) */
+        .active {
+            opacity: 0.6; /* Thoda dark taaki text dikhe */
+            animation: zoomEffect 6s infinite alternate;
         }
 
-        /* --- MAIN GLASS CARD --- */
-        .card {
-            position: relative;
-            z-index: 10; /* Photos ke aage */
-            width: 340px;
-            padding: 40px 30px;
-            background: rgba(255, 255, 255, 0.05);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-            border-radius: 20px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            border-left: 1px solid rgba(255,255,255,0.1);
-            backdrop-filter: blur(20px); /* Isse piche ki photos dhundhli dikhengi */
+        @keyframes zoomEffect {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.15); }
+        }
+
+        /* --- TEXT OVERLAYS --- */
+        .content {
+            position: absolute;
+            z-index: 10;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             text-align: center;
-            transform-style: preserve-3d;
-            transition: transform 0.3s;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.8));
         }
 
-        h1 { font-size: 3.5rem; line-height: 1; font-weight: 800; color: #fff; text-shadow: 0 0 20px #00d4ff; margin-bottom: 10px; }
-        h2 { font-size: 1.2rem; color: #ff00cc; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px; }
+        .year-label {
+            font-size: 1.2rem;
+            letter-spacing: 5px;
+            color: #ccc;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            font-size: 4rem;
+            background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 20px rgba(191, 149, 63, 0.5);
+            margin: 0;
+            line-height: 1.1;
+        }
+
+        .sub-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-style: italic;
+            margin-top: 15px;
+            color: #f0f0f0;
+            max-width: 80%;
+            line-height: 1.6;
+        }
+
+        /* --- NAME BADGE --- */
+        .badge {
+            margin-top: 40px;
+            border: 2px solid #bf953f;
+            padding: 10px 30px;
+            border-radius: 0; /* Sharp edges for royal look */
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
+        }
+
+        .badge span {
+            color: #bf953f;
+            font-weight: bold;
+            letter-spacing: 2px;
+            font-size: 1.2rem;
+        }
+
+        /* --- MUSIC PLAYER UI (Simulated) --- */
+        .player {
+            position: absolute;
+            bottom: 30px;
+            width: 80%;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 20;
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 50px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
         
-        .message-box {
-            font-size: 0.95rem; color: #eee; min-height: 70px; margin-bottom: 25px;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        .play-btn {
+            width: 40px; height: 40px;
+            background: #bf953f;
+            border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer;
+            box-shadow: 0 0 15px #bf953f;
         }
-
-        .signature {
-            font-family: 'Sacramento', cursive; font-size: 2.8rem; color: #ffd700;
-            margin-top: 5px; text-shadow: 0 0 10px #ffd700; transform: rotate(-5deg); display: inline-block;
-        }
-
-        .btn {
-            background: linear-gradient(90deg, #03a9f4, #f441a5); border: none; padding: 12px 30px;
-            color: white; border-radius: 30px; cursor: pointer; font-weight: bold; font-size: 1rem;
-            box-shadow: 0 0 15px #f441a5; transition: 0.3s; margin-top: 15px;
-        }
-        .btn:active { transform: scale(0.95); }
         
-        /* Confetti Canvas */
-        #confetti { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 20; }
+        .track-info {
+            display: flex; flex-direction: column; text-align: left;
+        }
+        .track-title { font-size: 0.9rem; color: white; font-weight: bold; }
+        .track-artist { font-size: 0.7rem; color: #ccc; }
+
+        /* Mobile Adjustments */
+        @media(max-width: 600px) {
+            h1 { font-size: 3rem; }
+            .sub-text { font-size: 1.1rem; }
+        }
+
     </style>
 </head>
 <body>
 
-    <canvas id="confetti"></canvas>
-
-    <div class="photo-container">
-        <div class="photo-bubble p1" style="background-image: url('1.jpg');"></div>
-        
-        <div class="photo-bubble p2" style="background-image: url('2.jpg');"></div>
-        
-        <div class="photo-bubble p3" style="background-image: url('3.jpg');"></div>
-        
-        <div class="photo-bubble p4" style="background-image: url('4.jpg');"></div>
-        
-        <div class="photo-bubble p5" style="background-image: url('5.jpg');"></div>
-        
-        <div class="photo-bubble p6" style="background-image: url('6.jpg');"></div>
+    <div class="slider">
+        <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1514525253440-b393452e8d26?w=800');"></div>
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1467810563316-b5476525c0f9?w=800');"></div>
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=800');"></div>
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800');"></div>
     </div>
-    <div class="card" id="tiltCard">
-        <h2>Happy New Year</h2>
+
+    <div class="content">
+        <div class="year-label">WELCOME TO</div>
         <h1>2026</h1>
-        
-        <div class="message-box">
-            Saal naya hai, yaadein purani hain,<br>
-            Aapke saath ye zindagi suhani hai.<br>
-            Cheers to more moments like these! 🥂
+        <div class="sub-text">
+            "Waqt naya hai, andaaz wahi.<br>Happy New Year!"
         </div>
 
-        <p style="font-size: 0.8rem; color: #ccc;">With Love & Best Wishes:</p>
-        <div class="signature">Deepak</div>
-        <br>
-        <button class="btn" onclick="celebrate()">Celebrate! 🎉</button>
+        <div class="badge">
+            <span>FROM: DEEPAK</span>
+        </div>
+    </div>
+
+    <div class="player">
+        <div class="play-btn" onclick="toggleAnim()">▶</div>
+        <div class="track-info">
+            <span class="track-title">New Year Vibes</span>
+            <span class="track-artist">Click Play to Celebrate</span>
+        </div>
     </div>
 
     <script>
-        // --- MOUSE TILT EFFECT ---
-        const card = document.getElementById('tiltCard');
-        document.addEventListener('mousemove', (e) => {
-            let xAxis = (window.innerWidth / 2 - e.pageX) / 20;
-            let yAxis = (window.innerHeight / 2 - e.pageY) / 20;
-            card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
-        });
-        // Reset on mouse leave
-        document.addEventListener('mouseleave', () => {
-            card.style.transform = `rotateY(0deg) rotateX(0deg)`;
-        });
+        // --- SLIDESHOW LOGIC ---
+        const slides = document.querySelectorAll('.slide');
+        let currentSlide = 0;
 
+        function nextSlide() {
+            // Current slide ko chupao
+            slides[currentSlide].classList.remove('active');
+            
+            // Next slide calculation
+            currentSlide = (currentSlide + 1) % slides.length;
+            
+            // New slide dikhao
+            slides[currentSlide].classList.add('active');
+        }
 
-        // --- CONFETTI (DHAMAKA) LOGIC ---
-        const canvas = document.getElementById('confetti');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        let confetti = [];
+        // Har 3.5 second mein photo change hogi
+        setInterval(nextSlide, 3500);
 
-        function celebrate() {
-            // Add pieces of confetti from center bottom
-            for(let i=0; i<150; i++) {
-                confetti.push({
-                    x: window.innerWidth / 2,
-                    y: window.innerHeight - 50,
-                    w: Math.random() * 8 + 4,
-                    h: Math.random() * 8 + 4,
-                    dx: (Math.random() - 0.5) * 30, // Spread wide
-                    dy: Math.random() * -25 - 10,   // Shoot up high
-                    color: `hsl(${Math.random() * 360}, 100%, 60%)`,
-                    gravity: 0.4,
-                    rotation: Math.random() * 360,
-                    rotationSpeed: (Math.random() - 0.5) * 10
-                });
+        // --- INTERACTION ---
+        function toggleAnim() {
+            const btn = document.querySelector('.play-btn');
+            if(btn.innerText === '▶') {
+                btn.innerText = 'II';
+                alert("Imagine a heavy bass beat dropping here! 🎵 (Apna song add kar sakte ho code me)");
+            } else {
+                btn.innerText = '▶';
             }
         }
-
-        function updateConfetti() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            confetti.forEach((p, i) => {
-                p.x += p.dx;
-                p.y += p.dy;
-                p.dy += p.gravity;
-                p.dx *= 0.98; // Air resistance
-                p.rotation += p.rotationSpeed;
-
-                ctx.save();
-                ctx.translate(p.x + p.w / 2, p.y + p.h / 2);
-                ctx.rotate(p.rotation * Math.PI / 180);
-                ctx.fillStyle = p.color;
-                ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
-                ctx.restore();
-
-                if(p.y > canvas.height) confetti.splice(i, 1);
-            });
-            requestAnimationFrame(updateConfetti);
-        }
-        updateConfetti();
-
-        // Resize fix
-        window.addEventListener('resize', () => {
-             canvas.width = window.innerWidth;
-             canvas.height = window.innerHeight;
-        });
-
     </script>
 </body>
 </html>
