@@ -14,37 +14,37 @@
             background-color: #000;
             height: 100vh;
             width: 100vw;
-            overflow: hidden; /* Scroll band */
-            touch-action: none; /* Mobile touch gestures band */
+            overflow: hidden; /* No Scroll */
+            touch-action: none; /* No Gestures */
             font-family: 'Cinzel', serif;
             color: #fff;
         }
 
-        /* --- BACKGROUND SLIDESHOW (FIXED & LOCKED) --- */
+        /* --- BACKGROUND SLIDESHOW --- */
         .slider {
-            position: fixed; /* Absolute ki jagah Fixed */
+            position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: 1;
-            pointer-events: none; /* User ispar click nahi kar payega */
+            pointer-events: none;
         }
 
         .slide {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background-size: cover;
-            background-position: center;
+            background-size: cover;      /* Photo puri screen par automatic fit hogi */
+            background-position: center; /* Photo ka beech ka hissa dikhega */
+            background-repeat: no-repeat;
             opacity: 0;
             transition: opacity 1.5s ease-in-out;
-            /* Transform hata diya taaki koi movement na ho */
         }
 
         .active {
-            opacity: 0.5;
+            opacity: 0.5; /* Brightness control (taaki text dikhe) */
         }
 
-        /* --- CONTENT LAYER --- */
+        /* --- TEXT CONTENT --- */
         .content {
-            position: fixed; /* Fixed taaki hile nahi */
+            position: fixed;
             top: 0; left: 0;
             z-index: 10;
             width: 100%;
@@ -55,7 +55,7 @@
             align-items: center;
             text-align: center;
             background: rgba(0,0,0,0.2);
-            pointer-events: none; /* Text select nahi hoga */
+            pointer-events: none;
         }
 
         .year-label {
@@ -87,6 +87,7 @@
             line-height: 1.6;
         }
 
+        /* --- BADGE --- */
         .badge {
             margin-top: 40px;
             border: 2px solid #bf953f;
@@ -102,14 +103,14 @@
             font-size: 1.2rem;
         }
 
-        /* --- PLAYER (Isme pointer-events auto rahenge taaki click ho) --- */
+        /* --- MUSIC PLAYER --- */
         .player {
             position: fixed;
             bottom: 30px;
             width: 90%;
             max-width: 400px;
             left: 50%;
-            transform: translateX(-50%); /* Center alignment fix */
+            transform: translateX(-50%);
             display: flex;
             align-items: center;
             gap: 15px;
@@ -118,7 +119,7 @@
             padding: 10px 20px;
             border-radius: 50px;
             border: 1px solid rgba(255,255,255,0.1);
-            pointer-events: auto; /* Sirf ye area clickable hoga */
+            pointer-events: auto; /* Buttons clickable rahenge */
         }
         
         .play-btn {
@@ -131,7 +132,7 @@
             font-size: 1.2rem;
             user-select: none;
             flex-shrink: 0;
-            -webkit-tap-highlight-color: transparent; /* Blue highlight hatane ke liye */
+            -webkit-tap-highlight-color: transparent;
         }
         
         .track-info {
@@ -149,10 +150,10 @@
 <body>
 
     <div class="slider">
-        <div class="slide active" style="background-image: src="1.jpg";"></div>
-        <div class="slide" style="background-image: url('https://unsplash.com/photos/a-black-sky-with-a-lot-of-stars-CEtIM994vaI?w=800');"></div>
-        <div class="slide" style="background-image: url('https://unsplash.com/photos/a-black-sky-with-a-lot-of-stars-CEtIM994vaI?w=800');"></div>
-        <div class="slide" style="background-image: url('https://unsplash.com/photos/a-black-sky-with-a-lot-of-stars-CEtIM994vaI?w=800');"></div>
+        <div class="slide active" style="background-image: url('1.jpg');"></div>
+        <div class="slide" style="background-image: url('2.jpg');"></div>
+        <div class="slide" style="background-image: url('3.jpg');"></div>
+        <div class="slide" style="background-image: url('4.jpg');"></div>
     </div>
 
     <div class="content">
@@ -170,8 +171,8 @@
     <div class="player">
         <div class="play-btn" onclick="toggleAudio()">▶</div>
         <div class="track-info">
-            <span class="track-title" id="statusText">Tap Button for Music</span>
-            <span class="track-artist">Deepak's Playlist</span>
+            <span class="track-title" id="statusText">Tap to Play Music</span>
+            <span class="track-artist">Deepak's Wish</span>
         </div>
     </div>
 
@@ -180,7 +181,7 @@
     </audio>
 
     <script>
-        // Slideshow
+        // Slideshow Logic
         const slides = document.querySelectorAll('.slide');
         let currentSlide = 0;
 
@@ -189,9 +190,10 @@
             currentSlide = (currentSlide + 1) % slides.length;
             slides[currentSlide].classList.add('active');
         }
+        // Har 3.5 second me photo change
         setInterval(nextSlide, 3500);
 
-        // Audio
+        // Music Logic
         function toggleAudio() {
             const audio = document.getElementById('myAudio');
             const btn = document.querySelector('.play-btn');
@@ -200,14 +202,14 @@
             if (audio.paused) {
                 audio.play().then(() => {
                     btn.innerText = 'II';
-                    status.innerText = "Playing Music...";
+                    status.innerText = "Playing...";
                 }).catch(e => {
-                    alert("Music Error: Check filename or browser settings.");
+                    alert("Music Error: Check if 'song.mp3' exists in the folder.");
                 });
             } else {
                 audio.pause();
                 btn.innerText = '▶';
-                status.innerText = "Music Paused";
+                status.innerText = "Paused";
             }
         }
     </script>
