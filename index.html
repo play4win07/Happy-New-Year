@@ -127,6 +127,7 @@
             display: flex; justify-content: center; align-items: center;
             cursor: pointer;
             box-shadow: 0 0 15px #bf953f;
+            user-select: none;
         }
         
         .track-info {
@@ -172,33 +173,35 @@
         </div>
     </div>
 
+    <audio id="myAudio" loop>
+        <source src="song.mp3" type="audio/mp3">
+    </audio>
+
     <script>
         // --- SLIDESHOW LOGIC ---
         const slides = document.querySelectorAll('.slide');
         let currentSlide = 0;
 
         function nextSlide() {
-            // Current slide ko chupao
             slides[currentSlide].classList.remove('active');
-            
-            // Next slide calculation
             currentSlide = (currentSlide + 1) % slides.length;
-            
-            // New slide dikhao
             slides[currentSlide].classList.add('active');
         }
 
-        // Har 3.5 second mein photo change hogi
         setInterval(nextSlide, 3500);
 
-        // --- INTERACTION ---
+        // --- MUSIC LOGIC ---
         function toggleAnim() {
             const btn = document.querySelector('.play-btn');
-            if(btn.innerText === '▶') {
-                btn.innerText = 'II';
-                alert("Imagine a heavy bass beat dropping here! 🎵 (Apna song add kar sakte ho code me)");
+            const audio = document.getElementById('myAudio');
+
+            // Check if audio is paused
+            if (audio.paused) {
+                audio.play();       // Play audio
+                btn.innerText = 'II'; // Change icon to Pause
             } else {
-                btn.innerText = '▶';
+                audio.pause();      // Pause audio
+                btn.innerText = '▶';  // Change icon to Play
             }
         }
     </script>
