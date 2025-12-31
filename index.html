@@ -12,12 +12,13 @@
         body {
             background-color: #000;
             height: 100vh;
+            width: 100vw;
             overflow: hidden;
             font-family: 'Cinzel', serif;
             color: #fff;
         }
 
-        /* --- BACKGROUND SLIDESHOW (MOVIE STYLE) --- */
+        /* --- BACKGROUND SLIDESHOW (FIXED - NO ZOOM) --- */
         .slider {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -27,22 +28,16 @@
         .slide {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background-size: cover;
-            background-position: center;
+            background-size: cover;      /* Screen fill karega */
+            background-position: center; /* Beech ka hissa dikhayega */
+            background-repeat: no-repeat;
             opacity: 0;
-            transform: scale(1);
-            transition: opacity 1s ease-in-out;
+            transition: opacity 1.5s ease-in-out; /* Sirf fade effect */
         }
 
-        /* Photo Zoom Animation (Ken Burns Effect) */
+        /* Active class - Sirf dikhane ke liye, zoom hata diya */
         .active {
-            opacity: 0.6; /* Thoda dark taaki text dikhe */
-            animation: zoomEffect 6s infinite alternate;
-        }
-
-        @keyframes zoomEffect {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.15); }
+            opacity: 0.5; /* Thoda dark taaki text dikhe */
         }
 
         /* --- TEXT OVERLAYS --- */
@@ -56,7 +51,7 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.8));
+            background: rgba(0,0,0,0.2); /* Halki shadow */
         }
 
         .year-label {
@@ -93,7 +88,6 @@
             margin-top: 40px;
             border: 2px solid #bf953f;
             padding: 10px 30px;
-            border-radius: 0; /* Sharp edges for royal look */
             background: rgba(0,0,0,0.6);
             backdrop-filter: blur(5px);
         }
@@ -105,29 +99,32 @@
             font-size: 1.2rem;
         }
 
-        /* --- MUSIC PLAYER UI (Simulated) --- */
+        /* --- MUSIC PLAYER UI --- */
         .player {
             position: absolute;
             bottom: 30px;
-            width: 80%;
+            width: 90%;
+            max-width: 400px;
             display: flex;
             align-items: center;
             gap: 15px;
             z-index: 20;
             background: rgba(255,255,255,0.1);
-            padding: 15px;
+            padding: 10px 20px;
             border-radius: 50px;
             border: 1px solid rgba(255,255,255,0.1);
         }
         
         .play-btn {
-            width: 40px; height: 40px;
+            width: 45px; height: 45px;
             background: #bf953f;
             border-radius: 50%;
             display: flex; justify-content: center; align-items: center;
             cursor: pointer;
             box-shadow: 0 0 15px #bf953f;
+            font-size: 1.2rem;
             user-select: none;
+            flex-shrink: 0; /* Button shrink nahi hoga */
         }
         
         .track-info {
@@ -136,12 +133,10 @@
         .track-title { font-size: 0.9rem; color: white; font-weight: bold; }
         .track-artist { font-size: 0.7rem; color: #ccc; }
 
-        /* Mobile Adjustments */
         @media(max-width: 600px) {
             h1 { font-size: 3rem; }
             .sub-text { font-size: 1.1rem; }
         }
-
     </style>
 </head>
 <body>
@@ -166,10 +161,10 @@
     </div>
 
     <div class="player">
-        <div class="play-btn" onclick="toggleAnim()">▶</div>
+        <div class="play-btn" onclick="toggleAudio()">▶</div>
         <div class="track-info">
-            <span class="track-title">New Year Vibes</span>
-            <span class="track-artist">Click Play to Celebrate</span>
+            <span class="track-title" id="statusText">Tap Button for Music</span>
+            <span class="track-artist">Deepak's Playlist</span>
         </div>
     </div>
 
@@ -178,7 +173,7 @@
     </audio>
 
     <script>
-        // --- SLIDESHOW LOGIC ---
+        // 1. SLIDESHOW (No Zoom)
         const slides = document.querySelectorAll('.slide');
         let currentSlide = 0;
 
@@ -187,21 +182,28 @@
             currentSlide = (currentSlide + 1) % slides.length;
             slides[currentSlide].classList.add('active');
         }
-
         setInterval(nextSlide, 3500);
 
-        // --- MUSIC LOGIC ---
-        function toggleAnim() {
-            const btn = document.querySelector('.play-btn');
+        // 2. MUSIC PLAYER LOGIC
+        function toggleAudio() {
             const audio = document.getElementById('myAudio');
+            const btn = document.querySelector('.play-btn');
+            const status = document.getElementById('statusText');
 
-            // Check if audio is paused
             if (audio.paused) {
-                audio.play();       // Play audio
-                btn.innerText = 'II'; // Change icon to Pause
+                // Play karne ki koshish karo
+                audio.play().then(() => {
+                    btn.innerText = 'II';
+                    status.innerText = "Playing Music...";
+                }).catch(error => {
+                    // Agar error aaye to user ko batao
+                    console.log("Music Error:", error);
+                    alert("Music play nahi ho raha! \nCheck karein ki mp3 file same folder me hai ya nahi.");
+                });
             } else {
-                audio.pause();      // Pause audio
-                btn.innerText = '▶';  // Change icon to Play
+                audio.pause();
+                btn.innerText = '▶';
+                status.innerText = "Music Paused";
             }
         }
     </script>
